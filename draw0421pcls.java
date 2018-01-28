@@ -47,7 +47,7 @@ public class draw0421pcls extends dxf12objects {
   public double lidtabD; // lock in tab on Lid width section
   public double frontFlap;
   public double lidTabAdd; // Increase of Lid Tab over Slot (x2)
-  public double baseArcCutOutSz = 10; // Opposite value, not Hypotinuse -hgt / Math.sin(Math.toRadians(45));  // for Std 10mm Opposite, this gives 14.14213562
+//  public double baseArcCutOutSz = 10; // Opposite value, not Hypotinuse -hgt / Math.sin(Math.toRadians(45));  // for Std 10mm Opposite, this gives 14.14213562
   public double arcExtra = 2; // Base cutout Clearance value
   
   public double blks1; 
@@ -61,8 +61,8 @@ public class draw0421pcls extends dxf12objects {
   public int noUpS1 = 0;
   public int noUpN2 = 0;
   
-  public String cutlay;
-  public String crelay;
+  public String CUT;
+  public String CREASE;
   public int col = 1; // Line Colour
   public String ltype = "CONTINUOUS"; // Line Type
   // end attributes
@@ -109,12 +109,12 @@ public class draw0421pcls extends dxf12objects {
     relMove(0, dmain);
     // middle Main Depth Panel & Right Side Lock slot
     Line(lmain, 0, "MATRIX"); // Top main depth bend
-    Line(0, -(lsgap + lsGapExtra), crelay); // Lock Slot Gap - Not the same oa the other side
+    Line(0, -(lsgap + lsGapExtra), CREASE); // Lock Slot Gap - Not the same oa the other side
     
     this.lockSlot();    
  //   relMove(0, -slot);
     
-    Line(0, -(dmain - toeflap - lsGapExtra), crelay); // To Base
+    Line(0, -(dmain - toeflap - lsGapExtra), CREASE); // To Base
     
     /* *********** LOTS More Work!!! **********/  
     // Draw 45 deg Flap - Mid panel
@@ -125,7 +125,7 @@ public class draw0421pcls extends dxf12objects {
     
     // Move back to 0,0
     this.absMove(0, 0);
-    Line(0, -winner, crelay);
+    Line(0, -winner, CREASE);
     mid45DegFlapT3S(fg);
     
     // Move back to 0,0
@@ -149,15 +149,15 @@ public class draw0421pcls extends dxf12objects {
       JOptionPane.showMessageDialog(null, "flapFrontCutAngle = 0. Flap Angle cut not properly calculated.");
     }
     
-    Line(lidOffset, lidOffset, cutlay);
-    Line(0, fg - lidOffset, cutlay);
+    Line(lidOffset, lidOffset, CUT);
+    Line(0, fg - lidOffset, CUT);
     
-    Line(lidtabD, flapBackCutAngle, cutlay);
-    Line(0, lkflp - flapBackCutAngle - flapFrontCutAngle, cutlay);
-    Line(-lidtabD, flapFrontCutAngle, cutlay);
-    Line(0, -lkflp, crelay);
+    Line(lidtabD, flapBackCutAngle, CUT);
+    Line(0, lkflp - flapBackCutAngle - flapFrontCutAngle, CUT);
+    Line(-lidtabD, flapFrontCutAngle, CUT);
+    Line(0, -lkflp, CREASE);
     relMove(0, lkflp);
-    Line(0, wouter - fg - lkflp, cutlay);
+    Line(0, wouter - fg - lkflp, CUT);
     
     // Top Lid Crease
     Line(-lmain - (lidOffset * 2), 0, "MATRIX");
@@ -169,7 +169,7 @@ public class draw0421pcls extends dxf12objects {
     // Are Ghost Creases Required?
     if (this.depth > (this.width / 1.9) ) {
       this.absMove(0, -this.winner);
-      this.Line(-this.dinr, -this.dinr, this.crelay);
+      this.Line(-this.dinr, -this.dinr, this.CREASE);
     }    
     
     // dxf += dxf_footer12(); WONT PRINT!
@@ -234,12 +234,12 @@ public class draw0421pcls extends dxf12objects {
   double slotRad = 2;
   double sltBlg = 9 - slotw;
   
-//    Line(-slotw, 0, cutlay);
-//    Line(0, -slot, cutlay);
-//    Line(slotw, 0, cutlay);
-//    arc2(xabs + 0, yabs + slotRad, slotRad, 270, 0, slotRad, slotRad, cutlay);
-//    Line(0, slot - 4, cutlay);
-//    arc2(xabs - slotRad, yabs + 0, slotRad, 0, 90, -slotRad, slotRad, cutlay);
+//    Line(-slotw, 0, CUT);
+//    Line(0, -slot, CUT);
+//    Line(slotw, 0, CUT);
+//    arc2(xabs + 0, yabs + slotRad, slotRad, 270, 0, slotRad, slotRad, CUT);
+//    Line(0, slot - 4, CUT);
+//    arc2(xabs - slotRad, yabs + 0, slotRad, 0, 90, -slotRad, slotRad, CUT);
     
     Arc3ptRad oArc = new Arc3ptRad();
     oArc.pt1X = this.xabs; // Absolute Values
@@ -251,15 +251,15 @@ public class draw0421pcls extends dxf12objects {
     oArc.FindCtrRad3PtOnArc();
     
     double aDat[] = oArc.ArcCenter(xabs, this.yabs - slot, xabs, yabs, oArc.radius, 3, "");
-    this.arc2(oArc.ctrX, oArc.ctrY, oArc.radius, oArc.EndAngle, oArc.StartAngle, oArc.pt3X, oArc.pt3Y, cutlay);
+    this.arc2(oArc.ctrX, oArc.ctrY, oArc.radius, oArc.EndAngle, oArc.StartAngle, oArc.pt3X, oArc.pt3Y, CUT);
     
     this.absMove(oArc.pt1X, oArc.pt1Y );
-    Line(-slotw + slotRad, 0, cutlay);
-    arc2(xabs + 0, yabs - slotRad, slotRad, 90, 180, -slotRad, -slotRad, cutlay);
-    Line(0, -slot + (slotRad * 2), cutlay);
+    Line(-slotw + slotRad, 0, CUT);
+    arc2(xabs + 0, yabs - slotRad, slotRad, 90, 180, -slotRad, -slotRad, CUT);
+    Line(0, -slot + (slotRad * 2), CUT);
     
-    arc2(xabs + slotRad, yabs, slotRad, 180, 270, slotRad, -slotRad, cutlay);
-    Line(slotw - slotRad, 0, cutlay);    
+    arc2(xabs + slotRad, yabs, slotRad, 180, 270, slotRad, -slotRad, CUT);
+    Line(slotw - slotRad, 0, CUT);    
   //  this.relMove(-slot, 0);
   }
   
@@ -272,42 +272,42 @@ public class draw0421pcls extends dxf12objects {
 //    */
 //  double tmpX = this.xabs, tmpY = this.yabs;  
 //  double radius = 14.14214;
-//  this.Line(radius, 0, this.cutlay); 
+//  this.Line(radius, 0, this.CUT); 
 //  double strAng = 0;
 //  double endAng = 44.58157;
 //  if (upDwn == 1) {
-//    this.arc2(tmpX, tmpY, radius, strAng, endAng, tmpX, tmpY, this.cutlay); // Main Arc
+//    this.arc2(tmpX, tmpY, radius, strAng, endAng, tmpX, tmpY, this.CUT); // Main Arc
 //    radius = 2;
 //    strAng = 44.58157;
 //    endAng = 44.58157 + 93.08314; 
-//    this.arc2(tmpX + 8.64826, tmpY + 8.52286, radius, strAng, endAng, tmpX + 7.16983, tmpY + 9.86979, this.cutlay); // Main Arc
+//    this.arc2(tmpX + 8.64826, tmpY + 8.52286, radius, strAng, endAng, tmpX + 7.16983, tmpY + 9.86979, this.CUT); // Main Arc
 //    this.xabs = tmpX + 7.16983;
 //    this.yabs = tmpY + 9.86979;
-//    this.Line(-6.6483,  -7.2973, this.cutlay); // Long Line
+//    this.Line(-6.6483,  -7.2973, this.CUT); // Long Line
 //
 //    endAng = 180;
 //    strAng = endAng - 42.33529;
-//    this.arc2(tmpX + radius, tmpY + 1.22555, radius, strAng, endAng, tmpX, tmpY + radius, this.cutlay);
+//    this.arc2(tmpX + radius, tmpY + 1.22555, radius, strAng, endAng, tmpX, tmpY + radius, this.CUT);
 //  } else {
 //    strAng = 360 - 44.581570;
 //    endAng = 0;
-//    this.arc2(tmpX, tmpY, radius, strAng, endAng, tmpX, tmpY, this.cutlay); // Main Arc 
+//    this.arc2(tmpX, tmpY, radius, strAng, endAng, tmpX, tmpY, this.CUT); // Main Arc 
 //    
 //    radius = 2;
 //    strAng = 360 - (44.58157 + 93.08314);
 //    endAng = 360 - 44.58157;  
-//    this.arc2(tmpX + 8.64826, tmpY - 8.52286, radius, strAng, endAng, tmpX + 7.16983, tmpY + 9.86979, this.cutlay); // Main Arc
+//    this.arc2(tmpX + 8.64826, tmpY - 8.52286, radius, strAng, endAng, tmpX + 7.16983, tmpY + 9.86979, this.CUT); // Main Arc
 //    this.xabs = tmpX + 7.16983;
 //    this.yabs = tmpY - 9.86979;
-//    this.Line(-6.6483,  7.2973, this.cutlay); // Long Line
+//    this.Line(-6.6483,  7.2973, this.CUT); // Long Line
 //    
 //    endAng = 180 + 42.33529;;
 //    strAng = 180;
-//    this.arc2(tmpX + radius, tmpY - 1.22555, radius, strAng, endAng, tmpX, tmpY + radius, this.cutlay);   
+//    this.arc2(tmpX + radius, tmpY - 1.22555, radius, strAng, endAng, tmpX, tmpY + radius, this.CUT);   
 //  }
 //
 //  this.absMove(tmpX, tmpY);
-//  this.Line(0, 1.2256 * upDwn, this.cutlay);
+//  this.Line(0, 1.2256 * upDwn, this.CUT);
 //  
 //  this.absMove(tmpX, tmpY); // Move back to the Corner of the Folds / Cut-out   
 //  } // baseArcCutOut
@@ -322,55 +322,55 @@ public class draw0421pcls extends dxf12objects {
     lsgap          - Lock Side Gap
     */ 
     double flpcbMain = this.dmain - (this.dside - this.flpcb); // Not same as flpcb  
-    double creCutArcSz = this.baseArcCutOutSz / Math.sin(Math.toRadians(45));  // for Std 10mm Opposite, this gives 14.14213562
-    double creCut = (int)Math.round((this.dmain - creCutArcSz) / 3);
+//    double creCutArcSz = this.baseArcCutOutSz / Math.sin(Math.toRadians(45));  // for Std 10mm Opposite, this gives 14.14213562
+    double creCut = (int)Math.round(this.dmain  / 3);
     double angCutBack = this.dmain - glFlap - this.lidtabD - this.flpcb;
     //    double creCut45 = (Math.sqrt((glFlap*glFlap) * 2) - baseArcCutOutSz) * Math.sin(Math.toRadians(45)); //(this.dmain - baseArcCutOutSz)- this.lidtabD - this.flpcb - (angCutBack / 2); // total value of 45 deg bend
-    double creCut45 = glFlap - baseArcCutOutSz; // We want X&Y not angled line size
+    double creCut45 = glFlap ; // We want X&Y not angled line size
     double creCut453rd = (int) (creCut45 / 3);  // 1/3 of 45 deg bend
     double inCut = dside - flpcb - glFlap;
     double tmpX = 0;
     double tmpY = 0;
     double chamfer = 5;
     
-    this.relMove(creCutArcSz, 0);
-    // Line(this.dside - creCutArcSz, 0, crelay);
-    Line(creCut, 0, crelay);
-    Line(creCut, 0, cutlay);
-    Line(this.dside - creCutArcSz - (creCut * 2), 0, crelay);
+    this.relMove(0, 0);
+    // Line(this.dside - creCutArcSz, 0, CREASE);
+    Line(creCut, 0, CREASE);
+    Line(creCut, 0, CUT);
+    Line(this.dside - (creCut * 2), 0, CREASE);
     // From the TOE side
-    Line(-flpcb, dblbend, cutlay); // VERTICLE  6mm - Silly reuse of dblbend for chamfer
+    Line(-flpcb, dblbend, CUT); // VERTICLE  6mm - Silly reuse of dblbend for chamfer
     if (dside - flpcbMain < glFlap) {//
-      creCut45 = (dside - flpcbMain - baseArcCutOutSz - 4.25); // Find out WHY 4.25 some time!
+      creCut45 = (dside - flpcbMain); // Find out WHY 4.25 some time!
       creCut453rd = (int) (creCut45 / 3);
-      Line(0, (dside - flpcbMain - this.dblbend - chamfer), cutlay);
+      Line(0, (dside - flpcbMain - this.dblbend - chamfer), CUT);
     } else {
       chamfer = 2;
-      Line(0, (glFlap - this.dblbend), cutlay);  
-      Line(-inCut + chamfer, 0, cutlay);
+      Line(0, (glFlap - this.dblbend), CUT);  
+      Line(-inCut + chamfer, 0, CUT);
     }//
-    // Line(-this.lidtabD, 0, cutlay);
+    // Line(-this.lidtabD, 0, CUT);
     tmpX = this.xabs; // store current point
     tmpY = this.yabs;
     this.absMove(0, this.dmain);
     
-    Line(this.dblbend, -flpcbMain, cutlay);
+    Line(this.dblbend, -flpcbMain, CUT);
     if (dside - flpcbMain < glFlap) {
-      Line(dside - flpcbMain - this.dblbend - chamfer, 0, cutlay);
+      Line(dside - flpcbMain - this.dblbend - chamfer, 0, CUT);
     } else {
-      Line(glFlap - this.dblbend, 0, cutlay);
-      Line(0, -inCut + chamfer, cutlay);
+      Line(glFlap - this.dblbend, 0, CUT);
+      Line(0, -inCut + chamfer, CUT);
     }
-    Line(tmpX - this.xabs, tmpY - this.yabs, cutlay);
+    Line(tmpX - this.xabs, tmpY - this.yabs, CUT);
     
     this.absMove(0, 0);
     // 45 degree bend
 //    this.baseArcCutOut(baseArcCutOutSz, 1);
     
 //    this.relMove(baseArcCutOutSz, baseArcCutOutSz);
-    Line(creCut453rd, creCut453rd, crelay);
-    Line(creCut453rd, creCut453rd, cutlay);
-    Line(creCut45 - (creCut453rd * 2) + (chamfer / 2), creCut45 - (creCut453rd * 2) + (chamfer / 2), crelay);   
+    Line(creCut453rd, creCut453rd, CREASE);
+    Line(creCut453rd, creCut453rd, CUT);
+    Line(creCut45 - (creCut453rd * 2) + (chamfer / 2), creCut45 - (creCut453rd * 2) + (chamfer / 2), CREASE);   
   } // mid45DegFlapT3 
   
   
@@ -387,8 +387,8 @@ public class draw0421pcls extends dxf12objects {
     double topRad = 12;
     int CW = 1;
     //  Line(-lidtabD, flapFrontCutAngle);
-    Line(-lflapX, lflapY, cutlay);
-    Line(0, frontFlap - (lflapY + peelSealW + (ripTabR * 2)), cutlay);
+    Line(-lflapX, lflapY, CUT);
+    Line(0, frontFlap - (lflapY + peelSealW + (ripTabR * 2)), CUT);
     Line(-ripTabL, (ripTabR * 2) - ripTabW, "SAFETY");
     relMove(0, ripTabW);
     Line(ripTabL, 0, "SAFETY");
@@ -397,11 +397,11 @@ public class draw0421pcls extends dxf12objects {
     arc(0, ripTabR * 2, ripTabR, "SAFETY", 1, CW);
     
     //Line(0, peelSealW);
-    Line(0, peelSealW - topRad, cutlay);
-    arc2(xabs - topRad, yabs + 0, topRad, 0, 90, -topRad, topRad, cutlay);
+    Line(0, peelSealW - topRad, CUT);
+    arc2(xabs - topRad, yabs + 0, topRad, 0, 90, -topRad, topRad, CUT);
     
     double psTopLine = -(lmain + (flpcb * 4)) + (lflapX * 2) + (topRad * 2);
-    Line(psTopLine, 0, cutlay);
+    Line(psTopLine, 0, CUT);
     
     // Peel & Seal
     relMove(0, -6);
@@ -423,10 +423,10 @@ public class draw0421pcls extends dxf12objects {
     relMove(0, -winner);
     Line(-lmain, 0, "MATRIX");  // Btm Base bend
     relMove(0, -dinr);
-    Line(lmain, 0, cutlay);
+    Line(lmain, 0, CUT);
     relMove(-(lmain / 2), 0);
     // MIRROR LINE
-    Line(0, 500, cutlay);
+    Line(0, 500, CUT);
     
     return true;
   }
@@ -439,25 +439,25 @@ public class draw0421pcls extends dxf12objects {
   */
   protected void TOE(double fg, double lkflp) {
     double lugAng = 2;
-    Line(dblbend + lsgap, 0, cutlay);
-    Line(lugAng, lug, cutlay);
-    Line(slot - 2, 0, cutlay);
-    Line(0, -winner - (lug * 2), cutlay);
-    Line(-slot + 2, 0, cutlay);
-    Line(-lugAng, lug, cutlay);
-    Line(-(lsgap + dblbend), 0, cutlay);  
+    Line(dblbend + lsgap, 0, CUT);
+    Line(lugAng, lug, CUT);
+    Line(slot - 2, 0, CUT);
+    Line(0, -winner - (lug * 2), CUT);
+    Line(-slot + 2, 0, CUT);
+    Line(-lugAng, lug, CUT);
+    Line(-(lsgap + dblbend), 0, CUT);  
     
     // Double Bend & Top Flap Lock Slot
     Line(0, fg + this.lidTabAdd, "MATRIX");
-    Line(dblbend, 0, cutlay);
+    Line(dblbend, 0, CUT);
     relMove(-dblbend, 0);
-    Line(0, lkflp - (this.lidTabAdd * 2), cutlay);
-    Line(dblbend, 0, cutlay);
+    Line(0, lkflp - (this.lidTabAdd * 2), CUT);
+    Line(dblbend, 0, CUT);
     relMove(-dblbend, 0);
     Line(0, fg + this.lidTabAdd, "MATRIX");
     
     relMove(dblbend, 0);
-    Line(0, -(fg + this.lidTabAdd), crelay);
+    Line(0, -(fg + this.lidTabAdd), CREASE);
     
     Arc3ptRad oArc = new Arc3ptRad();
     oArc.pt1X = this.xabs;
@@ -469,11 +469,11 @@ public class draw0421pcls extends dxf12objects {
     oArc.FindCtrRad3PtOnArc();
     
     double aDat[] = oArc.ArcCenter(xabs, this.yabs - lkflp + (this.lidTabAdd * 2), xabs, yabs, oArc.radius, 3, "");
-    this.arc2(oArc.ctrX, oArc.ctrY, oArc.radius, oArc.EndAngle, oArc.StartAngle, oArc.pt3X, oArc.pt3Y, cutlay);
+    this.arc2(oArc.ctrX, oArc.ctrY, oArc.radius, oArc.EndAngle, oArc.StartAngle, oArc.pt3X, oArc.pt3Y, CUT);
     
     relMove(-(dside + dblbend), fg + this.lidTabAdd); // shouldnt be necessary
     
-    Line(0, -(fg + this.lidTabAdd), crelay);
+    Line(0, -(fg + this.lidTabAdd), CREASE);
   }
   
   
@@ -488,32 +488,32 @@ public class draw0421pcls extends dxf12objects {
     double xTmp = this.xabs;
     double yTmp = this.yabs;  
     double flpcbMain = this.dmain - (this.dside - this.flpcb); // Not same as flpcb  
-    double creCutArcSz = this.baseArcCutOutSz / Math.sin(Math.toRadians(45));  // for Std 10mm Opposite, this gives 14.14213562
-    double creCut = (int)Math.round((this.dmain - creCutArcSz) / 3);
+//    double creCutArcSz = this.baseArcCutOutSz / Math.sin(Math.toRadians(45));  // for Std 10mm Opposite, this gives 14.14213562
+    double creCut = (int)Math.round(this.dmain / 3);
     double angCutBack = this.dmain - glFlap - this.lidtabD - this.flpcb;
-    double creCut45 = glFlap - baseArcCutOutSz; // We want X&Y not angled line size
+    double creCut45 = glFlap; // We want X&Y not angled line size
     double creCut453rd = (int) (creCut45 / 3);  // 1/3 of 45 deg bend
     double inCut = dside - flpcb - glFlap;
     double tmpX = 0;
     double tmpY = 0;
     double chamfer = 5;
     
-    this.relMove(creCutArcSz, 0);
-    // Line(this.dside - creCutArcSz, 0, crelay);
-    Line(creCut, 0, crelay);
-    Line(creCut, 0, cutlay);
-    Line(this.dside - creCutArcSz - (creCut * 2), 0, crelay);
+    this.relMove(0, 0);
+    // Line(this.dside - creCutArcSz, 0, CREASE);
+    Line(creCut, 0, CREASE);
+    Line(creCut, 0, CUT);
+    Line(this.dside - (creCut * 2), 0, CREASE);
     // From the TOE side
     
-    Line(-flpcb, -dblbend, cutlay); // VERTICLE  6mm - Silly reuse of dblbend for chamfer
+    Line(-flpcb, -dblbend, CUT); // VERTICLE  6mm - Silly reuse of dblbend for chamfer
     if (dside - flpcbMain < glFlap) {//
-      creCut45 = (dside - flpcbMain - baseArcCutOutSz - 4.25); // Find out WHY 4.25 some time!
+      creCut45 = (dside - flpcbMain); // Find out WHY 4.25 some time!
       creCut453rd = (int) (creCut45 / 3);
-      Line(0, -(dside - flpcbMain - this.dblbend - chamfer), cutlay);
+      Line(0, -(dside - flpcbMain - this.dblbend - chamfer), CUT);
     } else {
       chamfer = 2;
-      Line(0, -(glFlap - this.dblbend), cutlay);  
-      Line(-inCut + chamfer, 0, cutlay);
+      Line(0, -(glFlap - this.dblbend), CUT);  
+      Line(-inCut + chamfer, 0, CUT);
     }//
     
     tmpX = this.xabs; // store current point
@@ -522,30 +522,30 @@ public class draw0421pcls extends dxf12objects {
     this.absMove(xTmp, yTmp - this.dinr);
     
     if (dside - flpcbMain < glFlap) {
-      Line((dside - flpcbMain - chamfer), 0, cutlay);
+      Line((dside - flpcbMain - chamfer), 0, CUT);
     } else {
-      Line(glFlap, 0, cutlay);
-      Line(0, -(-inCut + chamfer), cutlay);
+      Line(glFlap, 0, CUT);
+      Line(0, -(-inCut + chamfer), CUT);
     }
-    Line(tmpX - this.xabs, tmpY - this.yabs, cutlay);
+    Line(tmpX - this.xabs, tmpY - this.yabs, CUT);
     
     this.absMove(xTmp, yTmp);
     // 45 degree bend
 //    this.baseArcCutOut(baseArcCutOutSz, -1);
     
 //    this.relMove(baseArcCutOutSz, -baseArcCutOutSz);
-    Line(creCut453rd, -creCut453rd, crelay);
-    Line(creCut453rd, -creCut453rd, cutlay);
-    Line((creCut45 - (creCut453rd * 2) + (chamfer / 2)), -(creCut45 - (creCut453rd * 2) + (chamfer / 2)), crelay);
+    Line(creCut453rd, -creCut453rd, CREASE);
+    Line(creCut453rd, -creCut453rd, CUT);
+    Line((creCut45 - (creCut453rd * 2) + (chamfer / 2)), -(creCut45 - (creCut453rd * 2) + (chamfer / 2)), CREASE);
     
     this.absMove(xTmp, yTmp - arcExtra);
     
-    Line(0, -dinr + (lsgap - flpcb) + slot + arcExtra, crelay);
+    Line(0, -dinr + (lsgap - flpcb) + slot + arcExtra, CREASE);
 
     this.lockSlot();
   //  relMove(0, -slot);
     
-    Line(0, -(lsgap - flpcb), crelay);
+    Line(0, -(lsgap - flpcb), CREASE);
     
     
   } // mid45DegFlapT3 

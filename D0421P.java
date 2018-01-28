@@ -393,8 +393,8 @@ public class D0421P extends javax.swing.JFrame {
     oDxf.unit = "M";
     oDxf.style = "";
     oDxf.flute = (String) cflutetype.getSelectedItem();
-    oDxf.cutlay = "CUT";
-    oDxf.crelay = "CREASE";
+    oDxf.CUT = "CUT";
+    oDxf.CREASE = "CREASE";
     oDxf.dxf = ""; // Output File's contents
     oDxf.dxfxmax = String.valueOf(0);
     oDxf.dxfymax = String.valueOf(0);
