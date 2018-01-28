@@ -438,7 +438,9 @@ public class draw0421pcls extends dxf12objects {
   * @return
   */
   protected void TOE(double fg, double lkflp) {
+    double FlpSlotRad = dblbend / 2; // the 90 deg radius part of the lock slot  
     double lugAng = 2;
+    
     Line(dblbend + lsgap, 0, CUT);
     Line(lugAng, lug, CUT);
     Line(slot - 2, 0, CUT);
@@ -447,17 +449,32 @@ public class draw0421pcls extends dxf12objects {
     Line(-lugAng, lug, CUT);
     Line(-(lsgap + dblbend), 0, CUT);  
     
+//    // Double Bend & Top Flap Lock Slot
+//    Line(0, fg + this.lidTabAdd, "MATRIX");
+//    Line(dblbend, 0, CUT);
+//    relMove(-dblbend, 0);
+//    Line(0, lkflp - (this.lidTabAdd * 2), CUT);
+//    Line(dblbend, 0, CUT);
+//    relMove(-dblbend, 0);
+//    Line(0, fg + this.lidTabAdd, "MATRIX");
+//    
+//    relMove(dblbend, 0);
+//    Line(0, -(fg + this.lidTabAdd), CREASE);
+
     // Double Bend & Top Flap Lock Slot
-    Line(0, fg + this.lidTabAdd, "MATRIX");
-    Line(dblbend, 0, CUT);
-    relMove(-dblbend, 0);
-    Line(0, lkflp - (this.lidTabAdd * 2), CUT);
-    Line(dblbend, 0, CUT);
-    relMove(-dblbend, 0);
-    Line(0, fg + this.lidTabAdd, "MATRIX");
-    
+    Line(0, fg + this.lidTabAdd + FlpSlotRad, "MATRIX");
+    this.arc2(xabs + FlpSlotRad, yabs + 0, FlpSlotRad, 180, 270, FlpSlotRad, -FlpSlotRad, CUT);
+    Line(dblbend - FlpSlotRad, 0, CUT);
+    relMove(-dblbend, FlpSlotRad);
+    Line(0, lkflp - (this.lidTabAdd * 2) - (FlpSlotRad * 2), CUT);
+    this.arc2(xabs + FlpSlotRad, yabs + 0, FlpSlotRad, 90, 180, FlpSlotRad, FlpSlotRad, CUT);
+    Line(dblbend - FlpSlotRad, 0, CUT);
+    relMove(-dblbend, -FlpSlotRad);
+    Line(0, fg + this.lidTabAdd + FlpSlotRad, "MATRIX");
+        
     relMove(dblbend, 0);
     Line(0, -(fg + this.lidTabAdd), CREASE);
+
     
     Arc3ptRad oArc = new Arc3ptRad();
     oArc.pt1X = this.xabs;
